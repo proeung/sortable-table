@@ -1,13 +1,14 @@
 import React from 'react';
-import { useTable, useSortBy, Column } from "react-table";
+import { useTable, useSortBy, Column } from 'react-table';
 import { City } from '../../api/getCities';
 
 interface SortableTableProps {
+  ariaLabel: string;
   columns: Array<{ Header: string; accessor: keyof City }>;
   data: City[];
 }
 
-const SortableTable: React.FC<SortableTableProps> = ({ columns, data }) => {
+const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, columns, data }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -23,7 +24,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ columns, data }) => {
   );
 
   return (
-    <table {...getTableProps()}>
+    <table {...getTableProps()} aria-label={ariaLabel}>
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>

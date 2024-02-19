@@ -2,7 +2,7 @@ import React from 'react';
 
 interface PaginationNavigationButtonProps {
   variant: 'first' | 'previous' | 'next' | 'last';
-  onClick: () => void; // Assuming you want to handle button clicks
+  onClick: () => void;
   disabled?: boolean;
 }
 
@@ -18,7 +18,7 @@ const PaginationNavigationButton: React.FC<PaginationNavigationButtonProps> = ({
   };
 
   return (
-    <button onClick={onClick} disabled={disabled} aria-label={getButtonLabel(variant)}>
+    <button onClick={onClick} disabled={disabled} aria-label={'Navigate to ' + getButtonLabel(variant)}>
       {getButtonLabel(variant)}
     </button>
   );

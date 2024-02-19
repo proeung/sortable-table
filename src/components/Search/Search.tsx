@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface SearchProps {
-  value: string;
+  ariaLabel: string;
   onSearch: (value: string) => void;
+  placeholder: string;
+  value: string;
 }
 
-const Search: React.FC<SearchProps> = ({ value, onSearch }) => {
+const Search: React.FC<SearchProps> = ({ ariaLabel, onSearch, placeholder, value }) => {
 
   return (
-    <div>
+    <div className='search'>
       <input
-        type="search"
+        type='search'
         value={value}
         onChange={(e) => onSearch(e.target.value)}
-        placeholder="Search for a city"
-        aria-label="Search for a city"
+        placeholder={placeholder}
+        aria-label={ariaLabel}
       />
     </div>
   );

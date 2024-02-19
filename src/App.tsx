@@ -5,6 +5,7 @@ import PaginationPerPageSelectField from './components/Pagination/PaginationPerP
 import PaginationNavigation from './components/Pagination/PaginationNavigation';
 import PaginationNavigationButton from './components/Pagination/PaginationNavigationButton';
 import SortableTable from './components/SortableTable/SortableTable';
+import SortableTableContainer from 'components/SortableTable/SortableTableContainer';
 import Search from './components/Search/Search';
 import './App.css';
 
@@ -17,7 +18,7 @@ const App = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Placeholder for totalPages calculation
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages] = useState(0);
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -71,22 +72,44 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header"></header>
-      <h1>City List</h1>
 
-      <Search value={searchTerm} onSearch={setSearchTerm} />
+      <SortableTableContainer
+        ariaLabel='City List Table Container'
+        title='City List'
+        description='Description for this table goes here'>
 
-      {error && <div>Error: {error.message}</div>}
-      {loading ? <div>Loading...</div> : <SortableTable columns={columns} data={cities} />}
+        <Search
+          ariaLabel='Search for a city'
+          placeholder='Search for a city'
+          value={searchTerm}
+          onSearch={setSearchTerm} />
 
-      <Pagination ariaLabel="City list pager" variant="joined">
-        <PaginationPerPageSelectField perPage={itemsPerPage} onChange={handleItemsPerPageChange} />
-        <PaginationNavigation>
-          <PaginationNavigationButton variant="first" onClick={() => handlePageChange(0)} disabled={currentPage === 0} />
-          <PaginationNavigationButton variant="previous" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage == 0} />
-          <PaginationNavigationButton variant="next" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1} />
-          <PaginationNavigationButton variant="last" onClick={() => handlePageChange(totalPages - 1)} disabled={currentPage === totalPages - 1} />
-        </PaginationNavigation>
-      </Pagination>
+        {loading && <div>Loading...</div>}
+        {!loading && cities.length === 0 && searchTerm && (
+          <div>No cities match your search criteria.</div>
+        )}
+        {error && <div>Error: {error.message}</div>}
+
+        {!error && !loading && cities.length > 0 && (
+          <SortableTable
+            ariaLabel='City List Data Table'
+            columns={columns}
+            data={cities} />
+        )}
+
+        <Pagination ariaLabel='City list pager' variant='joined'>
+          <PaginationPerPageSelectField perPage={itemsPerPage} onChange={handleItemsPerPageChange} />
+          <PaginationNavigation>
+            <PaginationNavigationButton variant='first' onClick={() => handlePageChange(0)} disabled={currentPage === 0} />
+            <PaginationNavigationButton variant='previous' onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 0} />
+            <PaginationNavigationButton variant='next' onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1} />
+            <PaginationNavigationButton variant='last' onClick={() => handlePageChange(totalPages - 1)} disabled={currentPage === totalPages - 1} />
+          </PaginationNavigation>
+        </Pagination>
+      </SortableTableContainer>
+
+
+
     </div>
   );
 };
