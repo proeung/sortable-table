@@ -1,48 +1,94 @@
-import { useEffect, useCallback, useState, useMemo } from 'react';
-import type { ChangeEvent } from 'react';
-import type { City } from 'api/getCities';
-import { getCities } from 'api/getCities';
+import { useEffect, useState, useMemo } from 'react';
+import { getCities, City } from './api/getCities';
+import Pagination from './components/Pagination/Pagination';
+import PaginationPerPageSelectField from './components/Pagination/PaginationPerPageSelectField';
+import PaginationNavigation from './components/Pagination/PaginationNavigation';
+import PaginationNavigationButton from './components/Pagination/PaginationNavigationButton';
+import SortableTable from './components/SortableTable/SortableTable';
+import Search from './components/Search/Search';
 import './App.css';
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [cities, setCities] = useState<City[]>([]);
-  const [error, setError] = useState<Error>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const cityRows = useMemo(() =>
-    cities.map(s => <pre key={s.id}>{JSON.stringify(s)}</pre>),
-  [cities]);
-
-  const runSearch = useCallback(async (term: string) => {
-    try
-    {
-      const searchResult = await getCities({ searchTerm: term });
-      setCities(searchResult);
-    } catch (err: any) {
-      setError(err);
-    }
-  }, []);
+  // Placeholder for totalPages calculation
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    runSearch(searchTerm);
-  }, [runSearch, searchTerm]);
+    const fetchCities = async () => {
+      setLoading(true);
+      try {
+        const offset = currentPage * itemsPerPage;
+        const citiesData = await getCities({ searchTerm, limit: itemsPerPage, offset });
+        setCities(citiesData);
+      } catch (err: any) {
+        setError(err);
+      }
+      setLoading(false);
+    };
 
-  const onSearchTermChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.currentTarget.value);
-    event.preventDefault();
+    fetchCities();
+  }, [searchTerm, currentPage, itemsPerPage]);
+
+  // Define the columns for the table
+  const columns = useMemo(() => [
+    {
+      Header: 'ID',
+      accessor: 'id' as keyof City,
+    },
+    {
+      Header: 'Country',
+      accessor: 'country' as keyof City,
+    },
+    {
+      Header: 'City Name',
+      accessor: 'nameAscii' as keyof City,
+    },
+    {
+      Header: 'Capital',
+      accessor: 'capital' as keyof City,
+    },
+    {
+      Header: 'Country Codes',
+      accessor: 'countryIso3' as keyof City,
+    },
+  ], []);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (value: number) => {
+    setItemsPerPage(value);
+    setCurrentPage(0);
   };
 
   return (
     <div className="App">
       <header className="App-header"></header>
       <h1>City List</h1>
-      <form>
-        <label htmlFor="search">Search</label>
-        <input id="search" name="search" type="text" onChange={() => onSearchTermChange}/>
-      </form>
-      {error ? <pre>{`Eek! ${error.message}`}</pre> : cityRows}
+
+      <Search value={searchTerm} onSearch={setSearchTerm} />
+
+      {error && <div>Error: {error.message}</div>}
+      {loading ? <div>Loading...</div> : <SortableTable columns={columns} data={cities} />}
+
+      <Pagination ariaLabel="City list pager" variant="joined">
+        <PaginationPerPageSelectField perPage={itemsPerPage} onChange={handleItemsPerPageChange} />
+        <PaginationNavigation>
+          <PaginationNavigationButton variant="first" onClick={() => handlePageChange(0)} disabled={currentPage === 0} />
+          <PaginationNavigationButton variant="previous" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage == 0} />
+          <PaginationNavigationButton variant="next" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1} />
+          <PaginationNavigationButton variant="last" onClick={() => handlePageChange(totalPages - 1)} disabled={currentPage === totalPages - 1} />
+        </PaginationNavigation>
+      </Pagination>
     </div>
   );
- };
+};
 
 export default App;
