@@ -1,4 +1,9 @@
 import React from 'react';
+import Button from 'components/Button/Button';
+import { ReactComponent as FirstPageIcon } from '../../assets/FirstPage.svg';
+import { ReactComponent as PreviousPageIcon } from '../../assets/ChevronLeft.svg';
+import { ReactComponent as NextPageIcon } from '../../assets/ChevronRight.svg';
+import { ReactComponent as LastPageIcon } from '../../assets/LastPage.svg';
 
 interface PaginationNavigationButtonProps {
   variant: 'first' | 'previous' | 'next' | 'last';
@@ -7,6 +12,13 @@ interface PaginationNavigationButtonProps {
 }
 
 const PaginationNavigationButton: React.FC<PaginationNavigationButtonProps> = ({ variant, onClick, disabled = false }) => {
+  const Icon = {
+    first: FirstPageIcon,
+    previous: PreviousPageIcon,
+    next: NextPageIcon,
+    last: LastPageIcon,
+  }[variant];
+
   const getButtonLabel = (variant: string) => {
     switch (variant) {
       case 'first': return 'First Page';
@@ -18,9 +30,9 @@ const PaginationNavigationButton: React.FC<PaginationNavigationButtonProps> = ({
   };
 
   return (
-    <button onClick={onClick} disabled={disabled} aria-label={'Navigate to ' + getButtonLabel(variant)}>
-      {getButtonLabel(variant)}
-    </button>
+    <Button onClick={onClick} disabled={disabled} ariaLabel={'Navigate to ' + getButtonLabel(variant)}>
+      <Icon />
+    </Button>
   );
 };
 

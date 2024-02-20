@@ -4,14 +4,16 @@ import { City } from '../../api/getCities';
 import { ReactComponent as CaretUp } from '../../assets/CaretUp.svg';
 import { ReactComponent as CaretDown } from '../../assets/CaretDown.svg';
 import { ReactComponent as SortIcon } from '../../assets/Sort.svg';
+import Button from 'components/Button/Button';
 
 interface SortableTableProps {
   ariaLabel: string;
+  caption?: string;
   columns: Array<{ Header: string; accessor: keyof City }>;
   data: City[];
 }
 
-const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, columns, data }) => {
+const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, columns, data }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -21,15 +23,16 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, columns, data 
   } = useTable(
     {
       columns,
-      data
+      data,
     },
     useSortBy
   );
 
   return (
     <table {...getTableProps()} aria-label={ariaLabel}>
+      {caption && <caption>{caption}</caption>}
       <thead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup, index) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
               <th
@@ -37,14 +40,14 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, columns, data 
                 scope='col'
                 aria-sort={column.isSorted ? (column.isSortedDesc ? 'descending' : 'ascending') : 'none'}
               >
-                <button type="button">
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted ? (
-                      column.isSortedDesc ? <CaretDown /> : <CaretUp />
-                    ) : <SortIcon />}
-                  </span>
-                </button>
+                <Button
+                  ariaLabel={`Sort by ${column.render('Header')} ${column.isSorted ? (column.isSortedDesc ? 'ascending' : 'descending') : 'ascending'}`}
+                >
+                  <span>{column.render('Header')}</span>
+                  {column.isSorted ? (
+                    column.isSortedDesc ? <CaretDown /> : <CaretUp />
+                  ) : <SortIcon />}
+                </Button>
 
               </th>
             ))}

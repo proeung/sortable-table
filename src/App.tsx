@@ -8,6 +8,7 @@ import SortableTable from './components/SortableTable/SortableTable';
 import SortableTableContainer from 'components/SortableTable/SortableTableContainer';
 import Search from './components/Search/Search';
 import './App.css';
+import Container from 'components/Container/Container';
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -81,7 +82,7 @@ const App = () => {
     <div className="App">
       <header className="App-header"></header>
 
-      <div>
+      <Container>
         <Search
           ariaLabel='Search for a city'
           placeholder='Search for a city'
@@ -91,8 +92,7 @@ const App = () => {
         <SortableTableContainer
           ariaLabel='City List Table Container'
           title='City List'
-          tabIndex={-1}
-          description='Description for this table goes here'
+          tabIndex={0}
           inlineStyles={{ maxHeight: '100rem' }}>
 
           {loading && <div>Loading...</div>}
@@ -104,6 +104,7 @@ const App = () => {
           {!error && !loading && cities.length > 0 && (
             <SortableTable
               ariaLabel='City List Data Table'
+              caption='Table caption goes here'
               columns={columns}
               data={cities}
             />
@@ -119,8 +120,8 @@ const App = () => {
             <PaginationNavigationButton variant='last' onClick={() => handlePageChange(totalPages - 1)} disabled={currentPage === totalPages - 1} />
           </PaginationNavigation>
         </Pagination>
-      </div>
-    </div >
+      </Container>
+    </div>
   );
 };
 
