@@ -64,6 +64,10 @@ const App = () => {
       accessor: 'nameAscii' as keyof City,
     },
     {
+      Header: 'Population',
+      accessor: 'population' as keyof City,
+    },
+    {
       Header: 'Country Codes',
       accessor: 'countryIso3' as keyof City,
     },
@@ -79,7 +83,7 @@ const App = () => {
   };
 
   return (
-    <div className="App">
+    <div className="App my-16 md:my-28 lg:my-40">
       <header className="App-header"></header>
 
       <Container>

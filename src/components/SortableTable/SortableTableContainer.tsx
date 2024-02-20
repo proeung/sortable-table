@@ -10,14 +10,15 @@ interface SortableTableContainerProps {
 
 const SortableTableContainer: React.FC<SortableTableContainerProps> = ({ children, ariaLabel, inlineStyles, title, tabIndex }) => {
   return (
-    <section tabIndex={tabIndex} aria-label={ariaLabel} className='table-container' style={inlineStyles}>
+    <section
+      tabIndex={tabIndex}
+      aria-label={ariaLabel}
+      className='table-container relative overflow-x-auto'
+      style={inlineStyles}>
       {title && (
-        <h2 className='table-container__heading'>{title}</h2>
+        <h2>{title}</h2>
       )}
-
-      <div className='table-container__content'>
-        {children}
-      </div>
+      {children}
     </section>
   );
 };

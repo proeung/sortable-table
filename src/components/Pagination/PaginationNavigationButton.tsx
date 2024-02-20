@@ -30,7 +30,10 @@ const PaginationNavigationButton: React.FC<PaginationNavigationButtonProps> = ({
   };
 
   return (
-    <Button onClick={onClick} disabled={disabled} ariaLabel={'Navigate to ' + getButtonLabel(variant)}>
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      ariaLabel={'Navigate to ' + getButtonLabel(variant)}>
       <Icon />
     </Button>
   );

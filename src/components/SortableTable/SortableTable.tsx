@@ -29,9 +29,12 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
   );
 
   return (
-    <table {...getTableProps()} aria-label={ariaLabel}>
+    <table
+      {...getTableProps()}
+      aria-label={ariaLabel}
+      className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
       {caption && <caption>{caption}</caption>}
-      <thead>
+      <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
         {headerGroups.map((headerGroup, index) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
@@ -39,6 +42,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
                 {...column.getHeaderProps(column.getSortByToggleProps())}
                 scope='col'
                 aria-sort={column.isSorted ? (column.isSortedDesc ? 'descending' : 'ascending') : 'none'}
+                className='px-6 py-3'
               >
                 <Button
                   ariaLabel={`Sort by ${column.render('Header')} ${column.isSorted ? (column.isSortedDesc ? 'ascending' : 'descending') : 'ascending'}`}
@@ -58,9 +62,17 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
         {rows.map(row => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <tr
+              {...row.getRowProps()}
+              className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
+            >
               {row.cells.map(cell => (
-                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                <td
+                  {...cell.getCellProps()}
+                  className='px-6 py-4'
+                >
+                  {cell.render('Cell')}
+                </td>
               ))}
             </tr>
           );
