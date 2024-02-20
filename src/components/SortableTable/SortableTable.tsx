@@ -1,6 +1,9 @@
 import React from 'react';
-import { useTable, useSortBy, Column } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
 import { City } from '../../api/getCities';
+import { ReactComponent as CaretUp } from '../../assets/CaretUp.svg';
+import { ReactComponent as CaretDown } from '../../assets/CaretDown.svg';
+import { ReactComponent as SortIcon } from '../../assets/Sort.svg';
 
 interface SortableTableProps {
   ariaLabel: string;
@@ -31,15 +34,18 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, columns, data 
             {headerGroup.headers.map(column => (
               <th
                 {...column.getHeaderProps(column.getSortByToggleProps())}
+                scope='col'
+                aria-sort={column.isSorted ? (column.isSortedDesc ? 'descending' : 'ascending') : 'none'}
               >
-                {column.render('Header')}
-                <span>
-                  {column.isSorted
-                    ? column.isSortedDesc
-                      ? ' 🔽'
-                      : ' 🔼'
-                    : ''}
-                </span>
+                <button type="button">
+                  {column.render('Header')}
+                  <span>
+                    {column.isSorted ? (
+                      column.isSortedDesc ? <CaretDown /> : <CaretUp />
+                    ) : <SortIcon />}
+                  </span>
+                </button>
+
               </th>
             ))}
           </tr>

@@ -3,7 +3,7 @@ import React from 'react';
 interface PaginationProps {
   children: React.ReactNode;
   ariaLabel: string;
-  variant: string;
+  variant?: string; // Optionally pass style to the table.
 }
 
 const Pagination: React.FC<PaginationProps> = ({ children, ariaLabel, variant }) => {

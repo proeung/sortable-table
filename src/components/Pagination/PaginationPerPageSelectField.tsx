@@ -7,13 +7,16 @@ interface PaginationPerPageSelectFieldProps {
 
 const PaginationPerPageSelectField: React.FC<PaginationPerPageSelectFieldProps> = ({ perPage, onChange }) => {
   return (
-    <select value={perPage} onChange={(e) => onChange(parseInt(e.target.value, 10))}>
-      {[10, 20, 30, 40, 50, 60].map(size => (
-        <option key={size} value={size}>
-          {size} per page
-        </option>
-      ))}
-    </select>
+    <div className='pagination-perpage'>
+      <label htmlFor="perPageSelect">Per page:</label>
+      <select value={perPage} onChange={(e) => onChange(parseInt(e.target.value, 10))}>
+        {[10, 25, 50, 100, 150].map(size => (
+          <option key={size} value={size}>
+            {size}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 

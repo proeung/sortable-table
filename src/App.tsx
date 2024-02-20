@@ -24,16 +24,28 @@ const App = () => {
     const fetchCities = async () => {
       setLoading(true);
       try {
+        // Check for simulated error condition
+        if (searchTerm === 'error') {
+          throw new Error('Simulated search error');
+        }
+
         const offset = currentPage * itemsPerPage;
         const citiesData = await getCities({ searchTerm, limit: itemsPerPage, offset });
         setCities(citiesData);
       } catch (err: any) {
         setError(err);
+        setCities([]); // Clear cities on actual error
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    fetchCities();
+    // Debounce the search to improve performance
+    const debounceTimer = setTimeout(() => {
+      fetchCities();
+    }, 150);
+
+    return () => clearTimeout(debounceTimer);
   }, [searchTerm, currentPage, itemsPerPage]);
 
   // Define the columns for the table
@@ -49,10 +61,6 @@ const App = () => {
     {
       Header: 'City Name',
       accessor: 'nameAscii' as keyof City,
-    },
-    {
-      Header: 'Capital',
-      accessor: 'capital' as keyof City,
     },
     {
       Header: 'Country Codes',
@@ -73,29 +81,34 @@ const App = () => {
     <div className="App">
       <header className="App-header"></header>
 
-      <SortableTableContainer
-        ariaLabel='City List Table Container'
-        title='City List'
-        description='Description for this table goes here'>
-
+      <div>
         <Search
           ariaLabel='Search for a city'
           placeholder='Search for a city'
           value={searchTerm}
           onSearch={setSearchTerm} />
 
-        {loading && <div>Loading...</div>}
-        {!loading && cities.length === 0 && searchTerm && (
-          <div>No cities match your search criteria.</div>
-        )}
-        {error && <div>Error: {error.message}</div>}
+        <SortableTableContainer
+          ariaLabel='City List Table Container'
+          title='City List'
+          tabIndex={-1}
+          description='Description for this table goes here'
+          inlineStyles={{ maxHeight: '100rem' }}>
 
-        {!error && !loading && cities.length > 0 && (
-          <SortableTable
-            ariaLabel='City List Data Table'
-            columns={columns}
-            data={cities} />
-        )}
+          {loading && <div>Loading...</div>}
+          {!loading && cities.length === 0 && searchTerm && (
+            <div>No cities match your search criteria.</div>
+          )}
+          {error && <div>Error: {error.message}</div>}
+
+          {!error && !loading && cities.length > 0 && (
+            <SortableTable
+              ariaLabel='City List Data Table'
+              columns={columns}
+              data={cities}
+            />
+          )}
+        </SortableTableContainer>
 
         <Pagination ariaLabel='City list pager' variant='joined'>
           <PaginationPerPageSelectField perPage={itemsPerPage} onChange={handleItemsPerPageChange} />
@@ -106,11 +119,8 @@ const App = () => {
             <PaginationNavigationButton variant='last' onClick={() => handlePageChange(totalPages - 1)} disabled={currentPage === totalPages - 1} />
           </PaginationNavigation>
         </Pagination>
-      </SortableTableContainer>
-
-
-
-    </div>
+      </div>
+    </div >
   );
 };
 
