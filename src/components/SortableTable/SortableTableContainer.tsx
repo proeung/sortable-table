@@ -16,7 +16,9 @@ const SortableTableContainer: React.FC<SortableTableContainerProps> = ({ childre
       className='table-container relative overflow-x-auto'
       style={inlineStyles}>
       {title && (
-        <h2>{title}</h2>
+        <h2 className='font-bold text-salt-1000 text-3xl mb-4'>
+          {title}
+        </h2>
       )}
       {children}
     </section>

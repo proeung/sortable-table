@@ -32,9 +32,13 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
     <table
       {...getTableProps()}
       aria-label={ariaLabel}
-      className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
-      {caption && <caption>{caption}</caption>}
-      <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+      className='w-full text-md text-left text-salt-900'>
+      {caption &&
+        <caption className='text-left mb-6 text-salt-900'>
+          {caption}
+        </caption>
+      }
+      <thead className='border-y border-salt-700 text-salt-800 bg-salt-200 leading-none'>
         {headerGroups.map((headerGroup, index) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
@@ -42,7 +46,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
                 {...column.getHeaderProps(column.getSortByToggleProps())}
                 scope='col'
                 aria-sort={column.isSorted ? (column.isSortedDesc ? 'descending' : 'ascending') : 'none'}
-                className='px-6 py-3'
+                className='px-5 py-3.5'
               >
                 <Button
                   ariaLabel={`Sort by ${column.render('Header')} ${column.isSorted ? (column.isSortedDesc ? 'ascending' : 'descending') : 'ascending'}`}
@@ -64,12 +68,12 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
           return (
             <tr
               {...row.getRowProps()}
-              className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'
+              className='bg-white border-b border-salt-700 hover:bg-salt-200'
             >
               {row.cells.map(cell => (
                 <td
                   {...cell.getCellProps()}
-                  className='px-6 py-4'
+                  className='px-5 py-4'
                 >
                   {cell.render('Cell')}
                 </td>

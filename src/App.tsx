@@ -97,7 +97,7 @@ const App = () => {
           ariaLabel='City List Table Container'
           title='City List'
           tabIndex={0}
-          inlineStyles={{ maxHeight: '100rem' }}>
+          inlineStyles={{ maxHeight: '50rem' }}>
 
           {loading && <div>Loading...</div>}
           {!loading && cities.length === 0 && searchTerm && (
@@ -108,7 +108,7 @@ const App = () => {
           {!error && !loading && cities.length > 0 && (
             <SortableTable
               ariaLabel='City List Data Table'
-              caption='Table caption goes here'
+              caption='Table caption content goes here'
               columns={columns}
               data={cities}
             />

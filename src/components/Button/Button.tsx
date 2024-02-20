@@ -14,6 +14,7 @@ const Button: React.FC<ButtonProps> = ({ children, ariaLabel, onClick, disabled 
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
+      className='flex items-center text-left'
     >
       {children}
     </button>
