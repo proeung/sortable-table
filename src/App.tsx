@@ -14,21 +14,47 @@ import Button from 'components/Button/Button';
 import Container from 'components/Container/Container';
 import { ReactComponent as MagnifyingGlass } from 'assets/MagnifyingGlass.svg';
 import './App.css';
+import Spinner from 'components/Spinner/Spinner';
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [cities, setCities] = useState<City[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState<Error | null>(null);
   const [status, setStatus] = useState<StatusType>('loading');
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Define the columns for the table
+  const columns = useMemo(() => [
+    {
+      Header: 'ID',
+      accessor: 'id' as keyof City,
+    },
+    {
+      Header: 'City Name',
+      accessor: 'nameAscii' as keyof City,
+    },
+    {
+      Header: 'Country',
+      accessor: 'country' as keyof City,
+    },
+    {
+      Header: 'Population',
+      accessor: 'population' as keyof City,
+    },
+    {
+      Header: 'Country Codes',
+      accessor: 'countryIso3' as keyof City,
+    },
+  ], []);
 
   useEffect(() => {
+    // Set loading to true when starting the search
+    setLoading(true);
     const fetchCities = async () => {
-      setLoading(true);
-      setStatus('loading'); // Set status to loading at the start of fetch
+      setStatus('loading');
       try {
         // Check for simulated error condition
         if (searchTerm === 'error') {
@@ -69,32 +95,10 @@ const App = () => {
       fetchCities();
     }, 150);
 
-    return () => clearTimeout(debounceTimer);
+    return () => {
+      clearTimeout(debounceTimer);
+    };
   }, [searchTerm, currentPage, itemsPerPage]);
-
-  // Define the columns for the table
-  const columns = useMemo(() => [
-    {
-      Header: 'ID',
-      accessor: 'id' as keyof City,
-    },
-    {
-      Header: 'City Name',
-      accessor: 'nameAscii' as keyof City,
-    },
-    {
-      Header: 'Country',
-      accessor: 'country' as keyof City,
-    },
-    {
-      Header: 'Population',
-      accessor: 'population' as keyof City,
-    },
-    {
-      Header: 'Country Codes',
-      accessor: 'countryIso3' as keyof City,
-    },
-  ], []);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -107,8 +111,8 @@ const App = () => {
 
   // console.log(totalPages);
   return (
-    <div className="App mt-16 md:mt-28 lg:mt-32">
-      <header className="App-header"></header>
+    <div className='App mt-16 md:mt-28 lg:mt-32'>
+      <header className='App-header'></header>
 
       <Container>
         <SortableTableContainer
@@ -123,8 +127,6 @@ const App = () => {
             placeholder='Search for a city'
             value={searchTerm}
             onSearch={setSearchTerm} />
-
-          {loading && <div>Loading...</div>}
 
           <SortableTable
             ariaLabel='City List Data Table'
@@ -152,6 +154,10 @@ const App = () => {
                 heading='Search Error'
                 message={error?.message}
               />
+            }
+            loading={loading && <Spinner
+              title='Loading the city data.'
+            />
             }
           />
 

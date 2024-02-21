@@ -12,12 +12,14 @@ interface SortableTableProps {
   caption?: string;
   columns: Array<{ Header: string; accessor: keyof City }>;
   data: City[];
+  inlineStyles?: React.CSSProperties;
   status: StatusType;
   crash?: React.ReactNode;
   empty?: React.ReactNode;
+  loading?: React.ReactNode;
 }
 
-const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, columns, data, status, crash, empty }) => {
+const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, columns, data, inlineStyles, status, crash, empty, loading }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -34,6 +36,8 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
 
   if (status === 'error') {
     return <>{crash}</>; // Render crash message outside of table structure
+  } else if (status === 'loading' && loading) {
+    return <>{loading}</>;
   }
 
   // Check if there's data
@@ -44,20 +48,23 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
       <table
         {...getTableProps()}
         aria-label={ariaLabel}
-        className='w-full text-md text-left text-salt-900 lg:table-fixed'>
+        className='w-full text-md text-left text-salt-900 table-auto lg:table-fixed'
+        style={inlineStyles}>
         {caption &&
           <caption className='text-left mb-8 text-salt-900'>
             {caption}
           </caption>
         }
-        <thead className='sticky z-[2] top-0 border-y border-salt-700 text-salt-800 bg-salt-200 leading-none'>
+        <thead className='sticky z-[2] top-0 text-salt-800 bg-salt-200 leading-none'>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   scope='col'
-                  className='overflow-hidden relative whitespace-nowrap'
+                  className='overflow-hidden relative whitespace-nowrap [box-shadow:0_-1px_0_0_#919197_inset,_0_1px_0_0_#919197_inset]'
+                  aria-sort={column.isSorted ? (column.isSortedDesc ? 'descending' : 'ascending') : 'none'}
+                  title={`Sort by ${column.render('Header')}`}
                 >
                   <Button ariaLabel={`Sort by ${column.render('Header')}`}>
                     <span>{column.render('Header')}</span>
