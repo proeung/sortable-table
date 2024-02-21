@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { getCities, City } from './api/getCities';
+import { StatusType } from 'types/status';
 import Pagination from './components/Pagination/Pagination';
 import PaginationPerPageSelectField from './components/Pagination/PaginationPerPageSelectField';
 import PaginationNavigation from './components/Pagination/PaginationNavigation';
@@ -7,8 +8,11 @@ import PaginationNavigationButton from './components/Pagination/PaginationNaviga
 import SortableTable from './components/SortableTable/SortableTable';
 import SortableTableContainer from 'components/SortableTable/SortableTableContainer';
 import Search from './components/Search/Search';
-import './App.css';
+import EmptyState from 'components/EmptyState/EmptyState';
+import Button from 'components/Button/Button';
 import Container from 'components/Container/Container';
+import { ReactComponent as MagnifyingGlass } from 'assets/MagnifyingGlass.svg';
+import './App.css';
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,10 +22,12 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [status, setStatus] = useState<StatusType>('loading');
 
   useEffect(() => {
     const fetchCities = async () => {
       setLoading(true);
+      setStatus('loading'); // Set status to loading at the start of fetch
       try {
         // Check for simulated error condition
         if (searchTerm === 'error') {
@@ -31,13 +37,27 @@ const App = () => {
         // Get offset amount for pagaination
         const offset = (currentPage - 1) * itemsPerPage;
         const response = (await getCities({ searchTerm, limit: itemsPerPage, offset }));
+
         setCities(response.data);
 
         // Get total pages and default to 1
         setTotalPages(Math.max(Math.ceil(response.pagination.total / itemsPerPage), 1));
+
+        // Check for search status
+        if (response.data.length === 0) {
+          if (searchTerm) {
+            setStatus('success');
+          } else {
+            setStatus('empty');
+          }
+        } else {
+          setStatus('success');
+        }
+
       } catch (err: any) {
         setError(err);
         setCities([]);
+        setStatus('error');
       } finally {
         setLoading(false);
       }
@@ -84,19 +104,18 @@ const App = () => {
     setCurrentPage(1);
   };
 
-
-  console.log(totalPages);
+  // console.log(totalPages);
   return (
-    <div className="App my-16 md:my-28 lg:my-36">
+    <div className="App mt-16 md:mt-28 lg:mt-32">
       <header className="App-header"></header>
 
       <Container>
         <SortableTableContainer
           ariaLabel='City List Table Container'
-          title='City List'
+          heading='City List'
           description='Description text goes here. Lorem ipsum dolor.'
-          tabIndex={0}
-          inlineStyles={{ maxHeight: '53.5rem' }}>
+          tabIndex={-1}
+          inlineStyles={{ maxHeight: '75vh' }}>
 
           <Search
             ariaLabel='Search for a city'
@@ -105,28 +124,55 @@ const App = () => {
             onSearch={setSearchTerm} />
 
           {loading && <div>Loading...</div>}
-          {!loading && cities.length === 0 && searchTerm && (
-            <div>No cities match your search criteria.</div>
-          )}
           {error && <div>Error: {error.message}</div>}
 
-          {!error && !loading && cities.length > 0 && (
-            <SortableTable
-              ariaLabel='City List Data Table'
-              caption=''
-              columns={columns}
-              data={cities}
-            />
-          )}
+          <SortableTable
+            ariaLabel='City List Data Table'
+            caption=''
+            columns={columns}
+            data={cities}
+            status={status}
+            empty={
+              <EmptyState
+                illustration={<MagnifyingGlass />}
+                heading='No results found'
+                description='No cities match your search criteria.'
+                actions={
+                  <Button
+                    variant="tertiary"
+                    ariaLabel='Click here to clear search input.'
+                    onClick={() => setSearchTerm('')}
+                  >
+                    Clear Search
+                  </Button>}
+              />
+            }
+          />
+
         </SortableTableContainer>
 
         <Pagination ariaLabel='City list pager' variant='joined'>
-          <PaginationPerPageSelectField perPage={itemsPerPage} onChange={handleItemsPerPageChange} />
+          <PaginationPerPageSelectField
+            perPage={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+          />
           <PaginationNavigation>
-            <PaginationNavigationButton variant='first' onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
-            <PaginationNavigationButton variant='previous' onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
-            <PaginationNavigationButton variant='next' onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages || totalPages === 1} />
-            <PaginationNavigationButton variant='last' onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages || totalPages === 1} />
+            <PaginationNavigationButton
+              variant='first'
+              onClick={() => handlePageChange(1)}
+              disabled={currentPage === 1} />
+            <PaginationNavigationButton
+              variant='previous'
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1} />
+            <PaginationNavigationButton
+              variant='next'
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages || totalPages === 1} />
+            <PaginationNavigationButton
+              variant='last'
+              onClick={() => handlePageChange(totalPages)}
+              disabled={currentPage === totalPages || totalPages === 1} />
           </PaginationNavigation>
         </Pagination>
       </Container>

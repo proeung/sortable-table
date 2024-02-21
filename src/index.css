@@ -53,7 +53,7 @@
 
   select,
   input {
-    @apply appearance-none cursor-pointer bg-salt-300 text-salt-1000 w-full py-3.5 px-4 rounded border-0 border-b-[.0625rem] border-salt-700;
+    @apply appearance-none cursor-pointer bg-salt-300 text-salt-1000 w-full py-2.5 px-4 rounded border-0 border-b-[.0625rem] border-salt-700;
   }
 
   select {
