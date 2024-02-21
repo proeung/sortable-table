@@ -5,16 +5,17 @@ interface ButtonProps {
   ariaLabel: string;
   onClick?: () => void;
   disabled?: boolean;
+  variant?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, ariaLabel, onClick, disabled = false }) => {
+const Button: React.FC<ButtonProps> = ({ children, ariaLabel, onClick, disabled = false, variant = 'btn-text' }) => {
   return (
     <button
       type='button'
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
-      className='flex items-center text-left'
+      className={`${variant}`}
     >
       {children}
     </button>

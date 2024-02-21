@@ -19,7 +19,64 @@
 @tailwind utilities;
 
 @layer utilities {
+  button:disabled svg * {
+    @apply fill-salt-600;
+  }
+
   button span+svg {
-    @apply ms-3.5;
+    @apply ms-3.5 grow-0;
+  }
+
+  button.btn-text {
+    @apply flex items-center cursor-pointer h-full w-full px-[1.2rem] py-[0.9rem] border-0;
+  }
+
+  button.btn-icon {
+    @apply relative text-sm inline-block transition-opacity duration-500 ease-in-out cursor-pointer p-3;
+  }
+
+  button.btn-icon svg {
+    @apply w-5 h-5;
+  }
+
+  button.btn-icon.first,
+  button.btn-icon.last {
+    @apply hidden md:inline-block;
+  }
+
+  button.btn-icon:hover:not(:disabled) {
+    background: radial-gradient(circle farthest-side,
+        #f4f4f3,
+        #f4f4f3 calc(100% - 0.25rem),
+        rgba(244, 244, 243, 0) calc(100% - 0.2rem));
+  }
+
+  select,
+  input {
+    @apply appearance-none cursor-pointer bg-salt-300 text-salt-1000 w-full py-3.5 px-4 rounded border-0 border-b-[.0625rem] border-salt-700;
+  }
+
+  select {
+    padding-inline-end: 2.5rem;
+  }
+
+  input {
+    padding-inline-start: 2.5rem;
+  }
+
+  select:hover,
+  select:focus,
+  select:focus-within,
+  input:hover,
+  input:focus,
+  input:focus-within {
+    @apply bg-kale-100 outline-none;
+  }
+
+  select:focus~div,
+  select:focus-within~div,
+  input:focus~div,
+  input:focus-within~div {
+    @apply border-kale-500 border-b-2;
   }
 }

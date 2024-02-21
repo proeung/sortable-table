@@ -56,12 +56,12 @@ const App = () => {
       accessor: 'id' as keyof City,
     },
     {
-      Header: 'Country',
-      accessor: 'country' as keyof City,
-    },
-    {
       Header: 'City Name',
       accessor: 'nameAscii' as keyof City,
+    },
+    {
+      Header: 'Country',
+      accessor: 'country' as keyof City,
     },
     {
       Header: 'Population',
@@ -97,7 +97,7 @@ const App = () => {
           ariaLabel='City List Table Container'
           title='City List'
           tabIndex={0}
-          inlineStyles={{ maxHeight: '50rem' }}>
+          inlineStyles={{ maxHeight: '53.5rem' }}>
 
           {loading && <div>Loading...</div>}
           {!loading && cities.length === 0 && searchTerm && (

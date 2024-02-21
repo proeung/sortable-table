@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTable, useSortBy } from 'react-table';
 import { City } from '../../api/getCities';
-import { ReactComponent as CaretUp } from '../../assets/CaretUp.svg';
-import { ReactComponent as CaretDown } from '../../assets/CaretDown.svg';
+import { ReactComponent as SortAsc } from '../../assets/SortAsc.svg';
+import { ReactComponent as SortDesc } from '../../assets/SortDesc.svg';
 import { ReactComponent as SortIcon } from '../../assets/Sort.svg';
 import Button from 'components/Button/Button';
 
@@ -34,7 +34,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
       aria-label={ariaLabel}
       className='w-full text-md text-left text-salt-900'>
       {caption &&
-        <caption className='text-left mb-6 text-salt-900'>
+        <caption className='text-left mb-8 text-salt-900'>
           {caption}
         </caption>
       }
@@ -46,14 +46,14 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
                 {...column.getHeaderProps(column.getSortByToggleProps())}
                 scope='col'
                 aria-sort={column.isSorted ? (column.isSortedDesc ? 'descending' : 'ascending') : 'none'}
-                className='px-5 py-3.5'
+                className='overflow-hidden relative whitespace-nowrap'
               >
                 <Button
                   ariaLabel={`Sort by ${column.render('Header')} ${column.isSorted ? (column.isSortedDesc ? 'ascending' : 'descending') : 'ascending'}`}
                 >
                   <span>{column.render('Header')}</span>
                   {column.isSorted ? (
-                    column.isSortedDesc ? <CaretDown /> : <CaretUp />
+                    column.isSortedDesc ? <SortDesc /> : <SortAsc />
                   ) : <SortIcon />}
                 </Button>
 
@@ -68,7 +68,7 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
           return (
             <tr
               {...row.getRowProps()}
-              className='bg-white border-b border-salt-700 hover:bg-salt-200'
+              className='bg-white border-b border-salt-700 leading-8'
             >
               {row.cells.map(cell => (
                 <td
