@@ -9,6 +9,7 @@ import SortableTable from './components/SortableTable/SortableTable';
 import SortableTableContainer from 'components/SortableTable/SortableTableContainer';
 import Search from './components/Search/Search';
 import EmptyState from 'components/EmptyState/EmptyState';
+import CrashState from 'components/CrashState/CrashState';
 import Button from 'components/Button/Button';
 import Container from 'components/Container/Container';
 import { ReactComponent as MagnifyingGlass } from 'assets/MagnifyingGlass.svg';
@@ -18,10 +19,10 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
+  const [error, setError] = useState<Error | null>(null);
   const [status, setStatus] = useState<StatusType>('loading');
 
   useEffect(() => {
@@ -124,7 +125,6 @@ const App = () => {
             onSearch={setSearchTerm} />
 
           {loading && <div>Loading...</div>}
-          {error && <div>Error: {error.message}</div>}
 
           <SortableTable
             ariaLabel='City List Data Table'
@@ -139,12 +139,18 @@ const App = () => {
                 description='No cities match your search criteria.'
                 actions={
                   <Button
-                    variant="tertiary"
+                    variant='btn-tertiary'
                     ariaLabel='Click here to clear search input.'
                     onClick={() => setSearchTerm('')}
                   >
                     Clear Search
                   </Button>}
+              />
+            }
+            crash={
+              <CrashState
+                heading='Search Error'
+                message={error?.message}
               />
             }
           />

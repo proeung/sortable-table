@@ -31,6 +31,14 @@
     @apply flex items-center cursor-pointer h-full w-full px-[1.2rem] py-[0.9rem] border-0;
   }
 
+  button.btn-tertiary {
+    @apply inline-block cursor-pointer px-[1.2rem] py-[0.9rem] border-0 text-kale-500 font-bold underline rounded;
+  }
+
+  button.btn-tertiary:hover:not(:disabled) {
+    @apply bg-kale-100;
+  }
+
   button.btn-icon {
     @apply relative text-sm inline-block transition-opacity duration-500 ease-in-out cursor-pointer p-3;
   }
