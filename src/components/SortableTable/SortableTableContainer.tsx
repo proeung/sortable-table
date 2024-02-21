@@ -5,10 +5,11 @@ interface SortableTableContainerProps {
   children: React.ReactNode;
   inlineStyles?: React.CSSProperties;
   title?: string;
+  description?: string;
   tabIndex?: number;
 }
 
-const SortableTableContainer: React.FC<SortableTableContainerProps> = ({ children, ariaLabel, inlineStyles, title, tabIndex }) => {
+const SortableTableContainer: React.FC<SortableTableContainerProps> = ({ children, ariaLabel, inlineStyles, title, description, tabIndex }) => {
   return (
     <section
       tabIndex={tabIndex}
@@ -16,10 +17,15 @@ const SortableTableContainer: React.FC<SortableTableContainerProps> = ({ childre
       className='table-container relative overflow-x-auto'
       style={inlineStyles}>
       {title && (
-        <h2 className='font-bold text-salt-1000 text-3xl mb-4'>
+        <h2 className='font-bold text-salt-1000 text-3xl mb-2'>
           {title}
         </h2>
       )}
+      {description &&
+        <p className='text-left mb-8 text-salt-900'>
+          {description}
+        </p>
+      }
       {children}
     </section>
   );

@@ -17,13 +17,22 @@ export type City = {
   population: number;
 };
 
+type Pagination = {
+  total: number;
+}
+
+type Response = {
+  pagination: Pagination;
+  data: City[];
+}
+
 const collator = new Intl.Collator('en', { sensitivity: 'base' });
 
 export const getCities = async ({
   limit = 10000,
   offset = 0,
   searchTerm
-}: SearchOptions = {}): Promise<City[]> => {
+}: SearchOptions = {}): Promise<Response> => {
 
   let filteredList: CityRaw[];
   if (!searchTerm) {
@@ -40,13 +49,16 @@ export const getCities = async ({
       collator.compare(c[3], searchTerm) === 0);
   }
 
-  return filteredList.slice(offset, offset + limit).map((row: CityRaw) => ({
-    id: row[0],
-    name: row[1],
-    nameAscii: row[2],
-    country: row[3],
-    countryIso3: row[4],
-    capital: row[5],
-    population: row[6],
-  }));
+  return {
+    'pagination': { total: filteredList.length },
+    'data': filteredList.slice(offset, offset + limit).map((row: CityRaw) => ({
+      id: row[0],
+      name: row[1],
+      nameAscii: row[2],
+      country: row[3],
+      countryIso3: row[4],
+      capital: row[5],
+      population: row[6],
+    }))
+  }
 }
