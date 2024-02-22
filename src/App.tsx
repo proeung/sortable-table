@@ -1,6 +1,5 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { getCities, City } from './api/getCities';
-import { StatusType } from 'types/status';
 import Pagination from './components/Pagination/Pagination';
 import PaginationPerPageSelectField from './components/Pagination/PaginationPerPageSelectField';
 import PaginationNavigation from './components/Pagination/PaginationNavigation';
@@ -11,10 +10,11 @@ import Search from './components/Search/Search';
 import EmptyState from 'components/EmptyState/EmptyState';
 import CrashState from 'components/CrashState/CrashState';
 import Button from 'components/Button/Button';
-import Container from 'components/Container/Container';
+import Section from 'components/Section/Section';
+import Spinner from 'components/Spinner/Spinner';
 import { ReactComponent as MagnifyingGlass } from 'assets/MagnifyingGlass.svg';
 import './App.css';
-import Spinner from 'components/Spinner/Spinner';
+
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,8 +23,7 @@ const App = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState<Error | null>(null);
-  const [status, setStatus] = useState<StatusType>('loading');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Define the columns for the table
   const columns = useMemo(() => [
@@ -50,57 +49,59 @@ const App = () => {
     },
   ], []);
 
-  useEffect(() => {
-    // Set loading to true when starting the search
+  const fetchCities = async () => {
     setLoading(true);
-    const fetchCities = async () => {
-      setStatus('loading');
-      try {
-        // Check for simulated error condition
-        if (searchTerm === 'error') {
-          throw new Error('Simulated search error');
-        }
-
-        // Get offset amount for pagaination
-        const offset = (currentPage - 1) * itemsPerPage;
-        const response = (await getCities({ searchTerm, limit: itemsPerPage, offset }));
-
-        setCities(response.data);
-
-        // Get total pages and default to 1
-        setTotalPages(Math.max(Math.ceil(response.pagination.total / itemsPerPage), 1));
-
-        // Check for search status
-        if (response.data.length === 0) {
-          if (searchTerm) {
-            setStatus('success');
-          } else {
-            setStatus('empty');
-          }
-        } else {
-          setStatus('success');
-        }
-
-      } catch (err: any) {
-        setError(err);
-        setCities([]);
-        setStatus('error');
-      } finally {
-        setLoading(false);
+    try {
+      // Check for simulated error condition
+      if (searchTerm === 'error') {
+        throw new Error('Simulated search error');
       }
-    };
 
+      // Get offset amount for pagaination
+      const offset = (currentPage - 1) * itemsPerPage;
+      const response = (await getCities({ searchTerm, limit: itemsPerPage, offset }));
+
+      setCities(response.data);
+
+      // Get total pages and default to 1
+      setTotalPages(Math.max(Math.ceil(response.pagination.total / itemsPerPage), 1));
+    } catch (err: any) {
+      setError(err);
+      setCities([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
     // Debounce the search to improve performance
     const debounceTimer = setTimeout(() => {
-      fetchCities();
-    }, 150);
+      if (currentPage === 1) {
+        fetchCities();
+      } else {
+        setCurrentPage(1);
+      }
+    }, 300);
 
     return () => {
       clearTimeout(debounceTimer);
     };
-  }, [searchTerm, currentPage, itemsPerPage]);
+  }, [searchTerm]);
 
-  const handlePageChange = (page: number) => {
+  useEffect(() => {
+    if (currentPage === 1) {
+      fetchCities();
+    } else {
+      setCurrentPage(1);
+    }
+  }, [itemsPerPage]);
+
+  useEffect(() => {
+    fetchCities();
+  }, [currentPage]);
+
+  const handlePageChange = async (page: number) => {
     setCurrentPage(page);
   };
 
@@ -109,31 +110,32 @@ const App = () => {
     setCurrentPage(1);
   };
 
-  // console.log(totalPages);
   return (
     <div className='App mt-16 md:mt-28 lg:mt-32'>
       <header className='App-header'></header>
 
-      <Container>
+      <Section
+        heading='City List'
+        description='Description text goes here. Lorem ipsum dolor.'
+      >
+        <Search
+          ariaLabel='Search for a city'
+          placeholder='Search for a city'
+          value={searchTerm}
+          onSearch={setSearchTerm} />
+
         <SortableTableContainer
           ariaLabel='City List Table Container'
-          heading='City List'
-          description='Description text goes here. Lorem ipsum dolor.'
           tabIndex={-1}
-          inlineStyles={{ maxHeight: '75vh' }}>
-
-          <Search
-            ariaLabel='Search for a city'
-            placeholder='Search for a city'
-            value={searchTerm}
-            onSearch={setSearchTerm} />
+          style={{ maxHeight: '75vh' }}>
 
           <SortableTable
             ariaLabel='City List Data Table'
             caption=''
             columns={columns}
             data={cities}
-            status={status}
+            loading={loading}
+            error={error}
             empty={
               <EmptyState
                 illustration={<MagnifyingGlass />}
@@ -146,7 +148,8 @@ const App = () => {
                     onClick={() => setSearchTerm('')}
                   >
                     Clear Search
-                  </Button>}
+                  </Button>
+                }
               />
             }
             crash={
@@ -155,12 +158,12 @@ const App = () => {
                 message={error?.message}
               />
             }
-            loading={loading && <Spinner
-              title='Loading the city data.'
-            />
+            loader={
+              <Spinner
+                title='Loading the city data.'
+              />
             }
           />
-
         </SortableTableContainer>
 
         <Pagination ariaLabel='City list pager' variant='joined'>
@@ -187,7 +190,7 @@ const App = () => {
               disabled={currentPage === totalPages || totalPages === 1} />
           </PaginationNavigation>
         </Pagination>
-      </Container>
+      </Section>
     </div>
   );
 };
