@@ -4,7 +4,9 @@ interface SpinnerProps {
   title: string;
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ title }) => {
+const Spinner: React.FC<SpinnerProps> = ({
+  title
+}) => {
   return (
     <div className='max-w-xl mx-auto text-center w-full py-16 md:py-40' role='status'>
       <div

@@ -19,7 +19,18 @@ interface SortableTableProps {
   loader?: React.ReactNode;
 }
 
-const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, columns, data, inlineStyles, loading, error, crash, empty, loader }) => {
+const SortableTable: React.FC<SortableTableProps> = ({
+  ariaLabel,
+  caption,
+  columns,
+  data,
+  inlineStyles,
+  loading,
+  error,
+  crash,
+  empty,
+  loader
+}) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -34,11 +45,13 @@ const SortableTable: React.FC<SortableTableProps> = ({ ariaLabel, caption, colum
     useSortBy
   );
 
-  if (error) {
-    return <>{crash}</>; // Render crash message outside of table structure
-  }
+  // Render Loader and Crash message
   if (loading) {
     return <>{loader}</>;
+  }
+
+  if (error) {
+    return <>{crash}</>;
   }
 
   // Check for empty

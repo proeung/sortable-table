@@ -50,7 +50,7 @@ export const getCities = async ({
   }
 
   return {
-    'pagination': { total: filteredList.length },
+    'pagination': { total: filteredList.length }, // Note: This modification is needed to get the total count of the data.
     'data': filteredList.slice(offset, offset + limit).map((row: CityRaw) => ({
       id: row[0],
       name: row[1],

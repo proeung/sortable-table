@@ -8,8 +8,12 @@ interface SearchProps {
   value: string;
 }
 
-const Search: React.FC<SearchProps> = ({ ariaLabel, onSearch, placeholder, value }) => {
-
+const Search: React.FC<SearchProps> = ({
+  ariaLabel,
+  onSearch,
+  placeholder,
+  value
+}) => {
   return (
     <div className='search mb-10 relative max-w-lg overflow-hidden rounded'>
       <div className='absolute translate-x-[0%] -translate-y-2/4 left-3 top-2/4 pointer-events-none'>

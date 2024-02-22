@@ -11,7 +11,11 @@ interface PaginationNavigationButtonProps {
   disabled?: boolean;
 }
 
-const PaginationNavigationButton: React.FC<PaginationNavigationButtonProps> = ({ variant, onClick, disabled = false }) => {
+const PaginationNavigationButton: React.FC<PaginationNavigationButtonProps> = ({
+  variant,
+  onClick,
+  disabled = false
+}) => {
   const Icon = {
     first: FirstPageIcon,
     previous: PreviousPageIcon,

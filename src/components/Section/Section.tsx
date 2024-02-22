@@ -6,7 +6,11 @@ interface SectionProps {
   description?: string;
 }
 
-const Section: React.FC<SectionProps> = ({ heading, description, children }) => {
+const Section: React.FC<SectionProps> = ({
+  heading,
+  description,
+  children
+}) => {
   return (
     <section className='w-full'>
       <div className="container px-5 md:px-10 xl:px-14 relative">

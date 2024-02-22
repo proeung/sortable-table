@@ -4,7 +4,9 @@ interface PaginationNavigationProps {
   children: React.ReactNode;
 }
 
-const PaginationNavigation: React.FC<PaginationNavigationProps> = ({ children }) => {
+const PaginationNavigation: React.FC<PaginationNavigationProps> = ({
+  children
+}) => {
   return (
     <div className='flex gap-x-1.5'>
       {children}

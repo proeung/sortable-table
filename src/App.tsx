@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { getCities, City } from './api/getCities';
 import Pagination from './components/Pagination/Pagination';
 import PaginationPerPageSelectField from './components/Pagination/PaginationPerPageSelectField';
@@ -15,8 +15,8 @@ import Spinner from 'components/Spinner/Spinner';
 import { ReactComponent as MagnifyingGlass } from 'assets/MagnifyingGlass.svg';
 import './App.css';
 
-
 const App = () => {
+  // State variables
   const [searchTerm, setSearchTerm] = useState('');
   const [cities, setCities] = useState<City[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,28 +27,14 @@ const App = () => {
 
   // Define the columns for the table
   const columns = useMemo(() => [
-    {
-      Header: 'ID',
-      accessor: 'id' as keyof City,
-    },
-    {
-      Header: 'City Name',
-      accessor: 'nameAscii' as keyof City,
-    },
-    {
-      Header: 'Country',
-      accessor: 'country' as keyof City,
-    },
-    {
-      Header: 'Population',
-      accessor: 'population' as keyof City,
-    },
-    {
-      Header: 'Country Codes',
-      accessor: 'countryIso3' as keyof City,
-    },
+    { Header: 'ID', accessor: 'id' as keyof City },
+    { Header: 'City Name', accessor: 'nameAscii' as keyof City },
+    { Header: 'Country', accessor: 'country' as keyof City },
+    { Header: 'Population', accessor: 'population' as keyof City },
+    { Header: 'Country Codes', accessor: 'countryIso3' as keyof City },
   ], []);
 
+  // Fetch cities data from getCities API
   const fetchCities = async () => {
     setLoading(true);
     try {
@@ -59,8 +45,9 @@ const App = () => {
 
       // Get offset amount for pagaination
       const offset = (currentPage - 1) * itemsPerPage;
-      const response = (await getCities({ searchTerm, limit: itemsPerPage, offset }));
 
+      // Fetch the data
+      const response = await getCities({ searchTerm, limit: itemsPerPage, offset });
       setCities(response.data);
 
       // Get total pages and default to 1
@@ -73,38 +60,29 @@ const App = () => {
     }
   };
 
+  // useEffect hook to debounce the search input and fetch data based on searchTerm changes
   useEffect(() => {
     setLoading(true);
-    // Debounce the search to improve performance
     const debounceTimer = setTimeout(() => {
-      if (currentPage === 1) {
-        fetchCities();
-      } else {
-        setCurrentPage(1);
-      }
+      currentPage === 1 ? fetchCities() : setCurrentPage(1);
     }, 300);
-
-    return () => {
-      clearTimeout(debounceTimer);
-    };
+    return () => clearTimeout(debounceTimer);
   }, [searchTerm]);
 
+  // useEffect hooks for fetching data when itemsPerPage changes
   useEffect(() => {
-    if (currentPage === 1) {
-      fetchCities();
-    } else {
-      setCurrentPage(1);
-    }
+    currentPage === 1 ? fetchCities() : setCurrentPage(1);
   }, [itemsPerPage]);
 
+  // useEffect hooks for fetching data when currentPage changes
   useEffect(() => {
     fetchCities();
   }, [currentPage]);
 
-  const handlePageChange = async (page: number) => {
+  // Handlers for pagination controls
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
   const handleItemsPerPageChange = (value: number) => {
     setItemsPerPage(value);
     setCurrentPage(1);
@@ -127,7 +105,7 @@ const App = () => {
         <SortableTableContainer
           ariaLabel='City List Table Container'
           tabIndex={-1}
-          style={{ maxHeight: '75vh' }}>
+          style={{ maxHeight: '50rem' }}>
 
           <SortableTable
             ariaLabel='City List Data Table'
@@ -166,7 +144,7 @@ const App = () => {
           />
         </SortableTableContainer>
 
-        <Pagination ariaLabel='City list pager' variant='joined'>
+        <Pagination ariaLabel='City list pager'>
           <PaginationPerPageSelectField
             perPage={itemsPerPage}
             onChange={handleItemsPerPageChange}

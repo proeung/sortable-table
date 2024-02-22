@@ -6,7 +6,10 @@ interface CrashStateProps {
   message?: string;
 }
 
-const CrashState: React.FC<CrashStateProps> = ({ heading, message }) => {
+const CrashState: React.FC<CrashStateProps> = ({
+  heading,
+  message
+}) => {
   return (
     <div className='w-full py-16 md:py-40'>
       <div className='max-w-xl mx-auto flex flex-col items-center gap-y-6 text-center'>

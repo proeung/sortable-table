@@ -6,7 +6,10 @@ interface PaginationPerPageSelectFieldProps {
   onChange: (perPage: number) => void;
 }
 
-const PaginationPerPageSelectField: React.FC<PaginationPerPageSelectFieldProps> = ({ perPage, onChange }) => {
+const PaginationPerPageSelectField: React.FC<PaginationPerPageSelectFieldProps> = ({
+  perPage,
+  onChange
+}) => {
   return (
     <div className='gap-x-4 items-center grid grid-cols-[repeat(2,max-content)] text-salt-1000 text-md'>
       <div className='overflow-hidden relative rounded'>

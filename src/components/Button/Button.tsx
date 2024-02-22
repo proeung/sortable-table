@@ -8,7 +8,13 @@ interface ButtonProps {
   variant?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, ariaLabel, onClick, disabled = false, variant = 'btn-text' }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  ariaLabel,
+  onClick,
+  disabled = false,
+  variant = 'btn-text'
+}) => {
   return (
     <button
       type='button'

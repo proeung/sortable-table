@@ -7,7 +7,12 @@ interface EmptyStateProps {
   actions?: React.ReactNode;
 }
 
-const EmptyState: React.FC<EmptyStateProps> = ({ illustration, heading, description, actions }) => {
+const EmptyState: React.FC<EmptyStateProps> = ({
+  illustration,
+  heading,
+  description,
+  actions
+}) => {
   return (
     <div className='w-full py-16 md:py-40'>
       <div className='max-w-xl mx-auto flex flex-col items-center gap-y-6 text-center'>
