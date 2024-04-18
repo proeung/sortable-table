@@ -15,12 +15,12 @@ const Section: React.FC<SectionProps> = ({
     <section className='w-full'>
       <div className="container px-5 md:px-10 xl:px-14 relative">
         {heading && (
-          <h2 className='font-bold text-salt-1000 text-3xl mb-2'>
+          <h2 className='font-bold text-zinc-1000 text-3xl mb-2'>
             {heading}
           </h2>
         )}
         {description &&
-          <p className='text-left mb-8 text-salt-900'>
+          <p className='text-left mb-8 text-zinc-900'>
             {description}
           </p>
         }

@@ -1,14 +1,13 @@
 import React from 'react';
+import { ReactComponent as MagnifyingGlass } from 'assets/MagnifyingGlass.svg';
 
 interface EmptyStateProps {
-  illustration?: React.ReactNode;
   heading?: string;
   description: string;
   actions?: React.ReactNode;
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
-  illustration,
   heading,
   description,
   actions
@@ -16,18 +15,14 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div className='w-full py-16 md:py-40'>
       <div className='max-w-xl mx-auto flex flex-col items-center gap-y-6 text-center'>
-        {illustration &&
-          <div className="illustration">
-            {illustration}
-          </div>
-        }
+        <MagnifyingGlass className='w-14 stroke-blue-600' />
         <div>
           {heading &&
-            <h3 className='font-bold text-salt-1000 text-2xl'>
+            <h3 className='font-bold text-zinc-1000 text-2xl'>
               {heading}
             </h3>
           }
-          <p className='text-salt-900'>
+          <p className='text-zinc-900'>
             {description}
           </p>
         </div>

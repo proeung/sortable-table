@@ -12,7 +12,6 @@ import CrashState from 'components/CrashState/CrashState';
 import Button from 'components/Button/Button';
 import Section from 'components/Section/Section';
 import Spinner from 'components/Spinner/Spinner';
-import { ReactComponent as MagnifyingGlass } from 'assets/MagnifyingGlass.svg';
 import './App.css';
 
 const App = () => {
@@ -118,7 +117,6 @@ const App = () => {
             error={error}
             empty={
               <EmptyState
-                illustration={<MagnifyingGlass />}
                 heading='No results found'
                 description='No cities match your search criteria.'
                 actions={

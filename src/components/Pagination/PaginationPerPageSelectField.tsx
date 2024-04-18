@@ -11,7 +11,7 @@ const PaginationPerPageSelectField: React.FC<PaginationPerPageSelectFieldProps> 
   onChange
 }) => {
   return (
-    <div className='gap-x-4 items-center grid grid-cols-[repeat(2,max-content)] text-salt-1000 text-md'>
+    <div className='gap-x-4 items-center grid grid-cols-[repeat(2,max-content)] text-zinc-1000 text-md'>
       <div className='overflow-hidden relative rounded'>
         <select
           id='perPageSelect'
@@ -24,12 +24,12 @@ const PaginationPerPageSelectField: React.FC<PaginationPerPageSelectFieldProps> 
             </option>
           ))}
         </select>
-        <div className='absolute border-salt-700 border-t bottom-0 inset-x-0' aria-hidden="true"></div>
+        <div className='absolute border-zinc-700 border-t bottom-0 inset-x-0' aria-hidden="true"></div>
         <span className='absolute translate-x-[0%] -translate-y-2/4 right-2 top-2/4 pointer-events-none'>
-          <CaretDown className='text-salt-700 fill-current' />
+          <CaretDown className='text-zinc-700 fill-current' />
         </span>
       </div>
-      <label htmlFor='perPageSelect' className='text-salt-1000'>Per page</label>
+      <label htmlFor='perPageSelect' className='text-zinc-1000'>Per page</label>
     </div>
   );
 };

@@ -17,7 +17,7 @@ const Search: React.FC<SearchProps> = ({
   return (
     <div className='search mb-10 relative max-w-lg overflow-hidden rounded'>
       <div className='absolute translate-x-[0%] -translate-y-2/4 left-3 top-2/4 pointer-events-none'>
-        <SearchIcon className='text-salt-800 fill-current' />
+        <SearchIcon className='text-zinc-800 fill-current' />
       </div>
       <input
         type='search'
@@ -26,7 +26,7 @@ const Search: React.FC<SearchProps> = ({
         placeholder={placeholder}
         aria-label={ariaLabel}
       />
-      <div className='absolute border-salt-700 border-t bottom-0 inset-x-0' aria-hidden="true"></div>
+      <div className='absolute border-zinc-700 border-t bottom-0 inset-x-0' aria-hidden="true"></div>
     </div>
   );
 };

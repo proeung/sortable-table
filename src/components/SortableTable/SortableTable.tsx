@@ -61,14 +61,14 @@ const SortableTable: React.FC<SortableTableProps> = ({
     <table
       {...getTableProps()}
       aria-label={ariaLabel}
-      className='w-full text-md text-left text-salt-900 table-auto lg:table-fixed'
+      className='w-full text-md text-left text-zinc-900 table-auto lg:table-fixed'
       style={inlineStyles}>
       {caption &&
-        <caption className='text-left mb-8 text-salt-900'>
+        <caption className='text-left mb-8 text-zinc-900'>
           {caption}
         </caption>
       }
-      <thead className='sticky z-[2] top-0 text-salt-800 bg-salt-200 leading-none'>
+      <thead className='sticky z-[2] top-0 text-zinc-800 bg-slate-100 leading-none'>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
@@ -99,7 +99,7 @@ const SortableTable: React.FC<SortableTableProps> = ({
           {rows.map(row => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()} className='bg-white border-b border-salt-700 leading-8'>
+              <tr {...row.getRowProps()} className='bg-white border-b border-zinc-700 leading-8 hover:bg-slate-100'>
                 {row.cells.map(cell => (
                   <td {...cell.getCellProps()} className='px-5 py-4'>
                     {cell.render('Cell')}

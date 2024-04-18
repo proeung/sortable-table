@@ -20,7 +20,7 @@
 
 @layer components {
   button:disabled svg * {
-    @apply fill-salt-600;
+    @apply fill-zinc-600;
   }
 
   button span+svg {
@@ -32,11 +32,11 @@
   }
 
   button.btn-tertiary {
-    @apply inline-block cursor-pointer px-[1.2rem] py-[0.9rem] border-0 text-kale-500 font-bold underline rounded;
+    @apply inline-block cursor-pointer px-[1.2rem] py-[0.9rem] border-0 text-blue-500 font-bold underline rounded;
   }
 
   button.btn-tertiary:hover:not(:disabled) {
-    @apply bg-kale-100;
+    @apply bg-slate-100;
   }
 
   button.btn-icon {
@@ -61,7 +61,7 @@
 
   select,
   input {
-    @apply appearance-none cursor-pointer bg-salt-300 text-salt-1000 w-full py-2.5 px-4 rounded border-0 border-b-[.0625rem] border-salt-700;
+    @apply appearance-none cursor-pointer bg-slate-100 text-zinc-800 w-full py-2.5 px-4 rounded border-0 border-b-[.0625rem] border-zinc-700;
   }
 
   select {
@@ -78,13 +78,13 @@
   input:hover,
   input:focus,
   input:focus-within {
-    @apply bg-kale-100 outline-none;
+    @apply bg-blue-100 outline-none;
   }
 
   select:focus~div,
   select:focus-within~div,
   input:focus~div,
   input:focus-within~div {
-    @apply border-kale-500 border-b-2;
+    @apply border-blue-500 border-b-2;
   }
 }
