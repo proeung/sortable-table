@@ -42,7 +42,7 @@ const SortableTableContainer: React.FC<SortableTableContainerProps> = ({
     let resizeObserver: ResizeObserver | null = null;
     if (container) {
       resizeObserver = new ResizeObserver((entries) => {
-        for (let entry of entries) {
+        for (let _entry of entries) {
           handleScroll();
         }
       });

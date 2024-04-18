@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable, useSortBy } from 'react-table';
+import { useTable, useSortBy, usePagination } from 'react-table';
 import { City } from '../../api/getCities';
 import { ReactComponent as SortAsc } from '../../assets/SortAsc.svg';
 import { ReactComponent as SortDesc } from '../../assets/SortDesc.svg';

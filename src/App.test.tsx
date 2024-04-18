@@ -12,7 +12,7 @@ describe('main page', () => {
   it('does a search correctly', async () => {
     render(<App />);
     expect(await screen.findByText(/Tokyo/)).toBeInTheDocument();
-    const textInput = screen.getByRole('textbox', { name: 'Search' });
+    const textInput = screen.getByRole('searchbox', { name: 'Search for a city' });
     userEvent.type(textInput, 'osaka');
     expect(screen.queryByText(/Tokyo/)).not.toBeInTheDocument();
   });

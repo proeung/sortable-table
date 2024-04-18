@@ -37,6 +37,8 @@ const App = () => {
   // Fetch cities data from getCities API
   const fetchCities = async () => {
     setLoading(true);
+    setError(null);
+
     try {
       // Check for simulated error condition
       if (searchTerm === 'error') {
