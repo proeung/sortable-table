@@ -7,7 +7,6 @@ module.exports = {
       center: true,
     },
     extend: {
-      // Gusto's Colors
       colors: {
         // Salt palette
         'salt-100': '#FFFFFF',
@@ -33,8 +32,6 @@ module.exports = {
       fontFamily: {
         'sans': [
           'SofiaPro',
-          '-apple-system',
-          'BlinkMacSystemFont',
           'Segoe UI',
           'Roboto',
           'Helvetica',
